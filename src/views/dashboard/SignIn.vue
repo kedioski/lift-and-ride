@@ -139,7 +139,7 @@
 <style scoped>
 .sign-in-box {
   position: absolute;
-  top: 35%;
+  top: 50%;
   left: 50%;
   width: 500px;
   padding: 40px;

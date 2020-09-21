@@ -123,6 +123,7 @@
                                   <v-text-field
                                     v-model="editedItem.startDate"
                                     label="Start date"
+                                    :disabled="true"
                                     readonly
                                     v-on="on"
                                   />
@@ -412,8 +413,13 @@
       save () {
         this.editedItem.status = 'COVERED'
         this.$delete(this.editedItem, 'driver')
-        this.updateLoad(this.editedIndex, this.editedItem)
-        this.close()
+        const isValid = this.validate(this.editedItem)
+        if (isValid) {
+          this.updateLoad(this.editedIndex, this.editedItem)
+          this.close()
+        } else {
+          this.$alert('Distance, weight, fuel, price must be numbers. Start date, end date, start location, end location are required fields')
+        }
       },
       close () {
         this.dialog = false
@@ -429,6 +435,12 @@
             return { name: name + ' ' + surname }
           }
         })[0]
+      },
+      validate (item) {
+        if (Number(item.price) && Number(item.weight) && Number(item.distance) && Number(item.fuel) && item.endDate && item.startDate && item.startLocation && item.endLocation) {
+          return true
+        }
+        return false
       },
     },
   }

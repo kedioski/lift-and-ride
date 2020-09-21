@@ -277,6 +277,8 @@
           },
         ],
         items: [],
+        /* eslint-disable-next-line */
+        reg: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,24}))$/,
       }
     },
     computed: {
@@ -318,12 +320,23 @@
       },
 
       save () {
-        if (this.editedIndex !== -1) {
-          this.updateDriver(this.editedIndex, this.editedItem)
+        const isValid = this.validate(this.editedItem)
+        if (isValid) {
+          if (this.editedIndex !== -1) {
+            this.updateDriver(this.editedIndex, this.editedItem)
+          } else {
+            this.createNewDriver(this.editedItem)
+          }
+          this.close()
         } else {
-          this.createNewDriver(this.editedItem)
+          this.$alert('Name, surname, start date, end date, phone number and truck number are required. Please enter valid email address.')
         }
-        this.close()
+      },
+      validate (item) {
+        if (item.startDate && item.endDate && item.name && item.surname && item.phone && item.truckNumber && item.email && this.reg.test(item.email)) {
+          return true
+        }
+        return false
       },
       createNewDriver (driver) {
         db.collection('drivers')

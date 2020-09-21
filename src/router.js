@@ -12,7 +12,7 @@ export default new Router({
       component: () => import('@/views/dashboard/Index'),
       children: [
         {
-          name: 'Tours',
+          name: 'Loads',
           path: '',
           component: () => import('@/views/dashboard/Dashboard'),
         },
@@ -30,6 +30,16 @@ export default new Router({
           name: 'Finance',
           path: '/finance',
           component: () => import('@/views/dashboard/Finance'),
+        },
+        {
+          name: 'LogIn',
+          path: '/log-in',
+          component: () => import('@/views/dashboard/LogIn'),
+        },
+        {
+          name: 'SignIn',
+          path: 'sign-in',
+          component: () => import('@/views/dashboard/SignIn'),
         },
       ],
     },

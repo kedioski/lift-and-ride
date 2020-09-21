@@ -116,6 +116,11 @@
           title: 'finance',
           to: '/finance',
         },
+        {
+          icon: 'mdi-finance',
+          title: 'finance',
+          to: '/log-in',
+        },
       ],
     }),
 

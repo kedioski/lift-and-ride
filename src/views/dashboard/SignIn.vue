@@ -66,6 +66,8 @@
 </template>
 
 <script>
+  import { db } from '../../main'
+
   export default {
     name: 'SignIn',
 
@@ -88,12 +90,7 @@
       register () {
         const isValid = this.validate()
         if (isValid) {
-          const uniqueUsername = this.checkUsername()
-          if (uniqueUsername) {
-            this.saveUser()
-          } else {
-            this.$alert('Username already exists!')
-          }
+          this.checkUsername()
         } else {
           this.$alert('All fields are required. Password must match confirm password!')
         }
@@ -107,11 +104,33 @@
       },
 
       checkUsername () {
-
+        db.collection('users').where('username', '==', this.username).get().then(querySnapshot => {
+          const users = querySnapshot.docs
+          if (users.length === 0) {
+            this.saveUser()
+          } else {
+            this.$alert('Username already exists!')
+          }
+        })
       },
 
       saveUser () {
-
+        const user = {
+          name: this.name,
+          surname: this.surname,
+          username: this.username,
+          email: this.email,
+          password: this.password,
+        }
+        db.collection('users')
+          .add(user)
+          .then(() => {
+            console.log('User successfully written!')
+            this.$router.push('log-in')
+          })
+          .catch((error) => {
+            console.error('User writing document: ', error)
+          })
       },
     },
   }

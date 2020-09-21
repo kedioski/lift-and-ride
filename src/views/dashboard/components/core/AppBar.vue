@@ -38,6 +38,16 @@
     >
       <v-icon>mdi-view-dashboard</v-icon>
     </v-btn>
+
+    <v-btn
+      class="ml-2"
+      min-width="0"
+      text
+      @click="logOut()"
+    >
+      <v-icon>mdi-account-key</v-icon>
+      Log out
+    </v-btn>
   </v-app-bar>
 </template>
 
@@ -65,6 +75,11 @@
       ...mapMutations({
         setDrawer: 'SET_DRAWER',
       }),
+
+      logOut () {
+        localStorage.loggedUser = undefined
+        this.$router.push('/log-in')
+      },
     },
   }
 </script>

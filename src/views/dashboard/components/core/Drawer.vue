@@ -99,7 +99,7 @@
         {
           icon: 'mdi-view-dashboard',
           title: 'dashboard',
-          to: '/',
+          to: '/dashboard',
         },
         {
           title: 'drivers',
@@ -115,11 +115,6 @@
           icon: 'mdi-finance',
           title: 'finance',
           to: '/finance',
-        },
-        {
-          icon: 'mdi-finance',
-          title: 'finance',
-          to: '/log-in',
         },
       ],
     }),

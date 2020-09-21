@@ -14,6 +14,7 @@
         <v-row>
           <v-text-field
             v-model="password"
+            type="password"
             label="Password"
           />
         </v-row>
@@ -56,8 +57,9 @@
       logIn () {
         db.collection('users').where('username', '==', this.username).where('password', '==', this.password).get().then(querySnapshot => {
           const users = querySnapshot.docs
-          if (users && users[0]) {
-            this.$router.push('DashBoard')
+          if (users && users.length) {
+            localStorage.loggedUser = this.username
+            this.$router.push('/')
           } else {
             this.$alert('User or password is not valid!')
           }

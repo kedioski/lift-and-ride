@@ -13,17 +13,17 @@ export default new Router({
       children: [
         {
           name: 'Loads',
-          path: '',
+          path: '/',
           component: () => import('@/views/dashboard/Dashboard'),
         },
         {
           name: 'Drivers',
-          path: 'tables/drivers',
+          path: '/tables/drivers',
           component: () => import('@/views/dashboard/tables/Drivers'),
         },
         {
           name: 'Users',
-          path: 'tables/users',
+          path: '/tables/users',
           component: () => import('@/views/dashboard/tables/Users'),
         },
         {
@@ -31,17 +31,15 @@ export default new Router({
           path: '/finance',
           component: () => import('@/views/dashboard/Finance'),
         },
-        {
-          name: 'LogIn',
-          path: '/log-in',
-          component: () => import('@/views/dashboard/LogIn'),
-        },
-        {
-          name: 'SignIn',
-          path: 'sign-in',
-          component: () => import('@/views/dashboard/SignIn'),
-        },
       ],
+    },
+    {
+      path: '/log-in',
+      component: () => import('@/views/dashboard/LogIn'),
+    },
+    {
+      path: '/sign-in',
+      component: () => import('@/views/dashboard/SignIn'),
     },
   ],
 })

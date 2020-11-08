@@ -28,7 +28,6 @@
 
     beforeMount: function () {
       this.hasCookie = localStorage.loggedUser
-      console.log(this.hasCookie)
       if (!this.hasCookie) {
         this.$router.push('log-in')
       }

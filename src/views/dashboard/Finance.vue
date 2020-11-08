@@ -56,15 +56,21 @@
         >
           <v-btn
             color="primary"
+            @click="exportCostPDF"
+          >
+            Total cost
+          </v-btn>
+          <v-btn
+            color="primary"
+            @click="exportIncomePDF"
+          >
+            Total Income
+          </v-btn>
+          <v-btn
+            color="primary"
             @click="exportPDF"
           >
-            Report trosok
-          </v-btn>
-          <v-btn color="primary">
-            Report prihod
-          </v-btn>
-          <v-btn color="primary">
-            Report both
+            Total cost + income
           </v-btn>
         </div>
       </v-col>
@@ -282,6 +288,57 @@
           this.editedIndex = -1
         })
       },
+      exportCostPDF () {
+        var vm = this
+        var columns = [
+          { title: 'Driver name', dataKey: 'driver' },
+          { title: 'Start Location', dataKey: 'startLocation' },
+          { title: 'End Location', dataKey: 'endLocation' },
+          { title: 'Distance (miles)', dataKey: 'distance' },
+          { title: 'Price ($)', dataKey: 'price' },
+          { title: 'Weight (kg)', dataKey: 'weight' },
+          { title: 'Fuel (l)', dataKey: 'fuel' },
+          { title: 'Start Date', dataKey: 'startDate' },
+          { title: 'End Date', dataKey: 'endDate' },
+        ]
+        /* eslint-disable new-cap */
+        const doc = new jsPDF('l', 'pt')
+        doc.text('Loads', 40, 40)
+        doc.autoTable(columns, vm.selected, {
+          margin: { top: 60 },
+        })
+
+        const finalY = doc.lastAutoTable.finalY
+        doc.setFontSize(12)
+        doc.text(40, finalY + 30, 'Total cost: ' + this.total(vm.selected))
+        doc.save('totalCost' + new Date() + '.pdf')
+      },
+      exportIncomePDF () {
+        var vm = this
+        var columns = [
+          { title: 'Driver name', dataKey: 'driver' },
+          { title: 'Start Location', dataKey: 'startLocation' },
+          { title: 'End Location', dataKey: 'endLocation' },
+          { title: 'Distance (miles)', dataKey: 'distance' },
+          { title: 'Price ($)', dataKey: 'price' },
+          { title: 'Weight (kg)', dataKey: 'weight' },
+          { title: 'Fuel (l)', dataKey: 'fuel' },
+          { title: 'Start Date', dataKey: 'startDate' },
+          { title: 'End Date', dataKey: 'endDate' },
+        ]
+        /* eslint-disable new-cap */
+        const doc = new jsPDF('l', 'pt')
+        doc.text('Loads', 40, 40)
+        doc.autoTable(columns, vm.selected, {
+          margin: { top: 60 },
+        })
+
+        const finalY = doc.lastAutoTable.finalY
+        doc.setFontSize(12)
+        doc.text(40, finalY + 20, 'fuel price is 2,5$ (1L is for 3 miles)')
+        doc.text(40, finalY + 70, 'Total income: ' + this.totalIncome(vm.selected))
+        doc.save('totalIncome' + new Date() + '.pdf')
+      },
       exportPDF () {
         var vm = this
         var columns = [
@@ -304,15 +361,35 @@
 
         const finalY = doc.lastAutoTable.finalY
         doc.setFontSize(12)
-        doc.text(40, finalY + 30, 'Total price: ' + this.totalPrice(vm.selected))
-        doc.save('loads' + new Date() + '.pdf')
+        doc.text(40, finalY + 20, 'fuel price is 2,5$ (1L is for 3 miles)')
+
+        doc.text(40, finalY + 70, 'Total cost: ' + this.totalPrice(vm.selected))
+        doc.text(40, finalY + 85, 'Total income: ' + this.totalIncome(vm.selected))
+        doc.text(40, finalY + 100, 'Total: ' + this.total(vm.selected))
+        doc.save('total' + new Date() + '.pdf')
       },
-      totalPrice (list) {
+      total (list) {
         var sum = 0
         list.forEach(e => {
           sum += Number(e.price)
         })
-        return sum + ' $'
+        return Number((sum).toFixed(2)) + ' $'
+      },
+      totalIncome (list) {
+        const fuelPrice = 2.5
+        var sum = 0
+        list.forEach(e => {
+          sum += (Number(e.price) - (fuelPrice * (Number(e.price) / 3)))
+        })
+        return Number((sum).toFixed(2)) + ' $'
+      },
+      totalPrice (list) {
+        const fuelPrice = 2.5
+        var sum = 0
+        list.forEach(e => {
+          sum += (fuelPrice * (Number(e.price) / 3))
+        })
+        return Number((sum).toFixed(2)) + ' $'
       },
       getDriverName (id) {
         return this.drivers.filter(function (elem) {

@@ -31,6 +31,11 @@ export default new Router({
           path: '/finance',
           component: () => import('@/views/dashboard/Finance'),
         },
+        {
+          name: 'Transport Model',
+          path: '/model',
+          component: () => import('@/views/dashboard/TransportModel'),
+        },
       ],
     },
     {
